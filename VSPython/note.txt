@@ -1,0 +1,49 @@
+import tabula
+import json
+from collections import defaultdict
+df = tabula.read_pdf('rptReprintPO.pdf', output_format="json", pages='all')
+#df = tabula.read_pdf('rptReprintPO.pdf', pages='all')
+#tabula.convert_into("rptReprintPO.pdf", "output.csv", output_format="csv", pages='all')
+#js = json.loads(df[0])
+#print(df)
+dic = defaultdict(lambda: defaultdict(str))
+#print(df[0]['data'])                    #df[0] is dic
+idx = 0
+for row in range(len(df[0]['data'])) :  #row is list
+    #print(len(df[0]['data'][row]))     #0:quantity/UOM 1:ITEM# 2.Des   3.CS PK 4.Unit Price    5.Extended
+    qt = df[0]['data'][row][0]['text']
+    item = df[0]['data'][row][1]['text']
+    des = df[0]['data'][row][2]['text']
+    cs = df[0]['data'][row][3]['text']
+    unit = df[0]['data'][row][4]['text']
+    ext = df[0]['data'][row][5]['text']
+    if qt =='' and item =='' and cs == '' and unit == '' and ext == '' :
+        dic[idx]['DESCRIPTION'] += des
+    else :
+        dic[idx]['QUANTITY'] = qt
+        dic[idx]['ITEM #'] = item
+        dic[idx]['DESCRIPTION'] = des
+        dic[idx]['CS PK'] = cs
+        dic[idx]['UNIT PRICE'] = unit
+        dic[idx]['EXTENDED'] = ext
+        idx += 1
+print(dic)
+    
+    # for col in df[0]['data'][row] :     #col is dic
+    #     if col['text'] != '' :
+    #         dic[row].append(col['text'])
+#print(dic)
+#print(df)
+
+#for cell in df :
+#    print(df['data'])
+#     for attribute, value in cell.items() :
+#         if len(attribute) > 100 :
+#             for at, va in attribute.items() :
+#                 for a in at.items() :
+#                     print(a,"                                     ")
+#         # top = 0
+#         # if attribute == 'top' :
+#         #     top = value
+        
+# #print("hello world")
